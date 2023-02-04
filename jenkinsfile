@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    
+    stages {
+    
+        stage('Clean Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+    
+          stage("Git Checkout"){
+
+               git credentialsId: 'GIT_HUB_CREDENTIALS', url: 'https://github.com/mkumar01/-k8s-jenkins-aws.gi'
+               sh 'cd -k8s-jenkins-aws'
+
+          }
+    
+        
+          stage('List pods') {
+            steps{
+                  
+                sh 'kubectl get pods'
+        }
+            
+        }
+        
+        stage('Gradle Build') {
+        steps{
+            sh './gradlew build'
+        }
+        }
+        
+    }
+}
